@@ -23,3 +23,40 @@ n == nums.length
 
 Follow up: Could you do it without extra space and in O(n) runtime?
 You may assume the returned list does not count as extra space.
+
+
+
+======================================================
+### Enfoque original con `0` como marcador
+
+Mi idea inicial fue aprovechar que todos los valores están entre `1` y `n` y usar el propio arreglo para marcar qué números habían aparecido.
+
+Para cada valor `x`, quería usar la posición `x - 1` como su marca:
+
+* Si aparece `3`, marco `numbers[2] = 0`.
+* Si aparece `1`, marco `numbers[0] = 0`.
+* Al terminar, cualquier posición que no fuera `0` representaría un número que nunca apareció.
+
+El problema era que al escribir `0` destruía el valor original que estaba almacenado en esa posición. Mi primera solución fue guardar ese valor en `storedValue` e intentar restaurarlo posteriormente cuando el `for` llegara a una posición que ya había sido marcada con `0`.
+
+Esto complicó mucho el algoritmo porque tenía que recordar:
+
+* qué valor había sido reemplazado,
+* en qué posición ocurrió,
+* cuándo restaurarlo,
+* y cuándo volver a marcar esa posición con `0`.
+
+La mejora era no posponer ese trabajo. Antes de reemplazar una posición por `0`, se guarda su valor original y se procesa inmediatamente:
+
+```text
+valor actual
+→ ir a su posición correspondiente
+→ guardar el valor que había ahí
+→ marcar la posición con 0
+→ usar el valor guardado como el siguiente valor a procesar
+→ repetir
+```
+
+La cadena termina cuando se llega a una posición que ya contiene `0`, porque eso significa que ese número ya había sido procesado.
+
+Así, la idea original de usar `0` sí era válida; el problema estaba en intentar restaurar y procesar los valores desplazados más adelante en vez de seguir inmediatamente la cadena.
