@@ -16,6 +16,7 @@ class Solution:
                 j+= 1
             if(j == len(target)):
                 return output
+        return output
 
 
 
